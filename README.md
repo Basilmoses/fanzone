@@ -1,23 +1,29 @@
-# FanZone
+# Welcome to your Lovable project
 
-FanZone is a football knowledge competition app: quick quizzes, head-to-head challenges, daily tournaments, leaderboards and player wallets. This repository is the SvelteKit + Cloudflare Workers implementation.
+This project was built with [Lovable](https://lovable.dev).
 
-## Stack
-- Svelte 5 + SvelteKit
-- TypeScript + Vite
-- Cloudflare Workers via `@sveltejs/adapter-cloudflare` and Wrangler
+## Build with Lovable
 
-## Local development
-```bash
-npm install
+Open your project in the [Lovable editor](https://lovable.dev) and keep building.
+
+- **Ship faster**: describe what you want to build and Lovable handles the code.
+- **Stay in sync**: connect the project to GitHub and every change made in Lovable is committed straight to your repository.
+- **Full ownership**: this code is yours. Push to your repository and your changes sync back into Lovable, ready for your next prompt.
+
+## Development
+
+Prefer working locally? You need Node.js and npm — [install with nvm](https://github.com/nvm-sh/nvm#installing-and-updating).
+
+```sh
+git clone <this-repository-url>
+cd <repository-name>
+npm i
 npm run dev
 ```
 
-## Build and deploy
-```bash
-npm run check
-npm run build
-npx wrangler deploy
-```
+## Built with
 
-Set up the Cloudflare account authentication with `npx wrangler login` before deploying. The current UI uses demo quiz questions and a demo wallet; no real payments, user authentication, or persistent backend are enabled yet.
+- TanStack Start
+- TypeScript
+- React
+- Tailwind CSS

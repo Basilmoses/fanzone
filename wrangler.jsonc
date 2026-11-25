@@ -7,5 +7,13 @@
   "assets": {
     "directory": ".svelte-kit/cloudflare",
     "binding": "ASSETS"
-  }
+  },
+  "d1_databases": [
+    {
+      "binding": "DB",
+      "database_name": "fanzone-db",
+      "database_id": "52ff70f1-2d2b-4bec-8e64-160da5781f4b",
+      "migrations_dir": "migrations"
+    }
+  ]
 }

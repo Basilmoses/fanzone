@@ -3,7 +3,7 @@
   import { goto } from "$app/navigation";
   type User = { id: string; displayName: string; email: string };
   type Question = { id: string; category: string; question: string; options: string[] };
-  type Competition = { id: string; title: string; type: string; status: string; inviteCode?: string | null; endsAt?: number; creatorName?: string; opponentName?: string | null; winnerUserId?: string | null };
+  type Competition = { date?: string; id: string; title: string; type: string; status: string; inviteCode?: string | null; endsAt?: number; creatorName?: string; opponentName?: string | null; winnerUserId?: string | null };
   type Entry = { id: string; displayName: string; score: number; totalQuestions: number };
   let user = $state<User | null>(null);
   let competition = $state<Competition | null>(null);

@@ -22,25 +22,14 @@ export const GET: RequestHandler = async ({ locals, platform }) => {
 export const POST: RequestHandler = async (event) => {
   const user = event.locals.user;
   if (!user) return json({ error: "Sign in to create a challenge." }, { status: 401 });
-  let input: { invitedEmail?: unknown };
-  try {
-    input = await event.request.json();
-  } catch {
-    input = {};
-  }
-  const invitedEmail = typeof input.invitedEmail === "string" ? input.invitedEmail.trim().toLowerCase() : "";
-  if (invitedEmail && (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(invitedEmail) || invitedEmail.length > 254)) {
-    return json({ error: "Enter a valid opponent email or leave it blank for an open invite." }, { status: 400 });
-  }
-  if (invitedEmail === user.email) return json({ error: "You cannot challenge yourself." }, { status: 400 });
   const db = database(event.platform);
   const code = inviteCode();
   const id = crypto.randomUUID();
   const now = Math.floor(Date.now() / 1000);
   const expiresAt = now + 86_400;
   await db.prepare(
-    "INSERT INTO competitions (id, type, title, invite_code, invited_email, created_by, status, starts_at, ends_at, created_at) " +
-    "VALUES (?, 'head_to_head', 'Head-to-Head Challenge', ?, ?, ?, 'open', ?, ?, ?)"
-  ).bind(id, code, invitedEmail || null, user.id, now, expiresAt, now).run();
+    "INSERT INTO competitions (id, type, title, invite_code, created_by, status, starts_at, ends_at, created_at) " +
+    "VALUES (?, 'head_to_head', 'Head-to-Head Challenge', ?, ?, 'open', ?, ?, ?)"
+  ).bind(id, code, user.id, now, expiresAt, now).run();
   return json({ competition: { id, inviteCode: code, status: "open", endsAt: expiresAt } }, { status: 201 });
 };

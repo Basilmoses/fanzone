@@ -20,7 +20,7 @@ npm run build
 npx wrangler deploy
 ```
 
-Set up the Cloudflare account authentication with `npx wrangler login` before deploying. The current UI uses demo quiz questions and a demo wallet; no real payments, user authentication, or persistent backend are enabled yet.
+FanZone uses Cloudflare D1 for accounts, quiz attempts, daily tournament standings, and head-to-head challenges. Passwords are PBKDF2-hashed and sessions use secure, HTTP-only cookies. Email verification and password reset are not configured yet; wallet payments remain disabled.\n\nRun `npx wrangler d1 migrations apply fanzone-db --local` before local development. The deployment workflow applies remote migrations before deploying. CI requires `CLOUDFLARE_API_TOKEN` and `CLOUDFLARE_ACCOUNT_ID` repository secrets.
 
 ## Original project source
 

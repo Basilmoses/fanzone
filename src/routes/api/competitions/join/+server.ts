@@ -15,16 +15,13 @@ export const POST: RequestHandler = async (event) => {
   if (!/^[A-F0-9]{12}$/.test(code)) return json({ error: "Enter a valid challenge code." }, { status: 400 });
   const db = database(event.platform);
   const challenge = await db.prepare(
-    "SELECT id, created_by, opponent_user_id, invited_email, status, ends_at AS endsAt " +
+    "SELECT id, created_by, opponent_user_id, status, ends_at AS endsAt " +
     "FROM competitions WHERE invite_code = ? AND type = 'head_to_head'"
-  ).bind(code).first<{ id: string; created_by: string; opponent_user_id: string | null; invited_email: string | null; status: string; endsAt: number }>();
+  ).bind(code).first<{ id: string; created_by: string; opponent_user_id: string | null; status: string; endsAt: number }>();
   if (!challenge || challenge.status !== "open" || challenge.endsAt <= Math.floor(Date.now() / 1000)) {
     return json({ error: "That challenge is unavailable or has expired." }, { status: 404 });
   }
   if (challenge.created_by === user.id) return json({ error: "You cannot join your own challenge." }, { status: 400 });
-  if (challenge.invited_email && challenge.invited_email !== user.email) {
-    return json({ error: "That challenge was sent to a different email address." }, { status: 403 });
-  }
   if (challenge.opponent_user_id && challenge.opponent_user_id !== user.id) {
     return json({ error: "That challenge has already been accepted." }, { status: 409 });
   }

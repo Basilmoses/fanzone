@@ -12,7 +12,6 @@ CREATE TABLE IF NOT EXISTS competitions (
   type TEXT NOT NULL CHECK (type IN ('daily', 'head_to_head')),
   title TEXT NOT NULL,
   invite_code TEXT UNIQUE,
-  invited_email TEXT,
   created_by TEXT REFERENCES users(id) ON DELETE SET NULL,
   opponent_user_id TEXT REFERENCES users(id) ON DELETE SET NULL,
   winner_user_id TEXT REFERENCES users(id) ON DELETE SET NULL,

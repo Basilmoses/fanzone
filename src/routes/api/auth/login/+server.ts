@@ -23,7 +23,7 @@ export const POST: RequestHandler = async (event) => {
     const user = await db.prepare(
       "SELECT id, display_name AS displayName, email, password_hash AS passwordHash FROM users WHERE email = ?"
     ).bind(email).first<{ id: string; displayName: string; email: string; passwordHash: string }>();
-    const valid = await verifyPassword(password, user?.passwordHash ?? "invalid");
+    const valid = await verifyPassword(password, user?.passwordHash ?? "pbkdf2-sha256$210000$AAAAAAAAAAAAAAAAAAAAAA$AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA");
     if (!user || !valid) return json({ error: "Email or password is incorrect." }, { status: 401 });
     await createSession(event, user.id);
     return json({ user: { id: user.id, displayName: user.displayName, email: user.email } });

@@ -122,7 +122,7 @@
 </script>
 <svelte:head><title>FanZone Competitions</title><meta name="description" content="Join FanZone daily football tournaments and head-to-head quizzes." /></svelte:head>
 <div class="shell">
-  <header><a class="brand" href="/">FAN<span>ZONE</span><small> FOOTBALL CHALLENGE</small></a><nav><a href="/">Home</a></nav>{#if user}<span class="user">{user.displayName}</span>{:else}<button class="primary" onclick={() => goto("/account")}>Sign in</button>{/if}</header>
+  <header><a class="brand" href="/">FAN<span>ZONE</span><small> FOOTBALL CHALLENGE</small></a><nav><a href="/">Home</a><a href="/leaderboard">Leaderboard</a></nav>{#if user}<span class="user">{user.displayName}</span>{:else}<button class="primary" onclick={() => goto("/account")}>Sign in</button>{/if}</header>
   {#if current && !finished}
     <main class="quiz"><div class="eyebrow">COMPETITION · QUESTION {index + 1} OF {questions.length}</div><div class="progress"><span style:width={((index + 1) / questions.length) * 100 + "%"}></span></div>
       <div class="quiz-card"><div class="tag">{current.category}</div><h1>{current.question}</h1><div class="options">{#each current.options as option, i}<button class:chosen={selected === i} onclick={() => { answers = { ...answers, [current.id]: i }; error = ""; }} disabled={busy}>{String.fromCharCode(65 + i)} <span>{option}</span></button>{/each}</div>

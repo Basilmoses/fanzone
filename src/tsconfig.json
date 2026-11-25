@@ -1,0 +1,13 @@
+{
+  "extends": "../tsconfig.json",
+  "include": [
+    "./**/*.ts",
+    "./**/*.js",
+    "./**/*.svelte",
+    "../.svelte-kit/types/**/*.d.ts"
+  ],
+  "exclude": [
+    "../legacy-lovable/**",
+    "../node_modules/**"
+  ]
+}

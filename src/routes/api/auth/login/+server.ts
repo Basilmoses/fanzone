@@ -10,6 +10,7 @@ export const POST: RequestHandler = async (event) => {
   } catch {
     return json({ error: "Enter your email and password." }, { status: 400 });
   }
+  if (!input || typeof input !== "object") return json({ error: "Enter your email and password." }, { status: 400 });
   const email = typeof input.email === "string" ? normaliseEmail(input.email) : "";
   const password = typeof input.password === "string" ? input.password : "";
   if (!email || email.length > 254 || !password || password.length > 128) {

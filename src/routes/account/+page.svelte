@@ -69,7 +69,7 @@
       </div>
     {:else}
       <h1>{mode === "register" ? "Join the fans." : "Welcome back."}</h1>
-      <p class="muted">Your account saves your competition scores and player history.</p>
+      <p class="muted">Your display name appears in public competition rankings. Your email is not shown there.</p>
       <div class="panel">
         <div class="tabs">
           <button class:active={mode === "register"} onclick={() => { mode = "register"; error = ""; }}>Create account</button>

@@ -13,6 +13,7 @@ export const POST: RequestHandler = async (event) => {
   } catch {
     return json({ error: "Submit your answers to finish the quiz." }, { status: 400 });
   }
+  if (!input || typeof input !== "object") return json({ error: "Submit your answers to finish the quiz." }, { status: 400 });
   if (!Array.isArray(input.answers) || input.answers.length !== 10) {
     return json({ error: "Answer all 10 questions before submitting." }, { status: 400 });
   }

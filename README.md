@@ -20,7 +20,9 @@ npm run build
 npx wrangler deploy
 ```
 
-FanZone uses Cloudflare D1 for accounts, quiz attempts, daily tournament standings, and head-to-head challenges. Passwords are PBKDF2-hashed and sessions use secure, HTTP-only cookies. Email verification and password reset are not configured yet; wallet payments remain disabled.\n\nRun `npx wrangler d1 migrations apply fanzone-db --local` before local development. The deployment workflow applies remote migrations before deploying. CI requires `CLOUDFLARE_API_TOKEN` and `CLOUDFLARE_ACCOUNT_ID` repository secrets.
+FanZone uses Cloudflare D1 for accounts, quiz attempts, daily tournament standings, and head-to-head challenges. Passwords are PBKDF2-hashed and sessions use secure, HTTP-only cookies. Email verification and password reset are not configured yet; wallet payments remain disabled.
+
+Run `npx wrangler d1 migrations apply DB --local` before local development. The deployment workflow applies remote migrations before deploying. CI requires `CLOUDFLARE_API_TOKEN` and `CLOUDFLARE_ACCOUNT_ID` repository secrets.
 
 ## Original project source
 

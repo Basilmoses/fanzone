@@ -12,6 +12,7 @@ export const POST: RequestHandler = async (event) => {
   } catch {
     return json({ error: "Choose a quiz mode." }, { status: 400 });
   }
+  if (!input || typeof input !== "object") return json({ error: "Choose a quiz mode." }, { status: 400 });
   const mode = input.mode ?? "quick";
   if (mode !== "quick" && mode !== "daily" && mode !== "head_to_head") {
     return json({ error: "That quiz mode is not available." }, { status: 400 });

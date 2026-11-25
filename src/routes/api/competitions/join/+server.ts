@@ -11,6 +11,7 @@ export const POST: RequestHandler = async (event) => {
   } catch {
     return json({ error: "Enter a challenge code." }, { status: 400 });
   }
+  if (!input || typeof input !== "object") return json({ error: "Enter a challenge code." }, { status: 400 });
   const code = typeof input.inviteCode === "string" ? input.inviteCode.trim().toUpperCase() : "";
   if (!/^[A-F0-9]{12}$/.test(code)) return json({ error: "Enter a valid challenge code." }, { status: 400 });
   const db = database(event.platform);

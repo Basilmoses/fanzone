@@ -1,8 +1,8 @@
 # Original source archive
 
-This folder preserves the original Lovable project files at their original relative paths. The original project uses React, TypeScript, and TanStack Router; the active application in the repository remains SvelteKit.
+This folder preserves the original Lovable project files at their original relative paths. The original project uses React, TypeScript, and TanStack Router; the active application in this repository remains SvelteKit.
 
-All 95 text files were copied. These two binary files were not available in a transferable byte format through the connected source tools:
+All 97 source files were transferred: 95 text files and these two binary assets, preserved as binary files:
 
 - `public/favicon.ico`
 - `src/assets/stadium-hero.jpg`

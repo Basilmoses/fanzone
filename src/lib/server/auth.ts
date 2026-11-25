@@ -42,7 +42,7 @@ export async function verifyPassword(password: string, stored: string): Promise<
   }
   const key = await crypto.subtle.importKey("raw", encoder.encode(password), "PBKDF2", false, ["deriveBits"]);
   const candidate = new Uint8Array(await crypto.subtle.deriveBits(
-    { name: "PBKDF2", hash: "SHA-256", salt: fromBase64Url(rawSalt), iterations },
+    { name: "PBKDF2", hash: "SHA-256", salt: fromBase64Url(rawSalt).buffer as ArrayBuffer, iterations },
     key,
     256
   ));

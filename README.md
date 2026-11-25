@@ -21,3 +21,8 @@ npx wrangler deploy
 ```
 
 Set up the Cloudflare account authentication with `npx wrangler login` before deploying. The current UI uses demo quiz questions and a demo wallet; no real payments, user authentication, or persistent backend are enabled yet.
+
+
+## Original project source
+
+The original Lovable source is archived under [`legacy-lovable/`](legacy-lovable/). It is kept separate because that project uses React while the active application here uses SvelteKit. See [`legacy-lovable/ARCHIVE-NOTES.md`](legacy-lovable/ARCHIVE-NOTES.md) for the two binary assets that still need to be transferred.

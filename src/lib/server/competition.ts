@@ -61,10 +61,40 @@ export async function startQuizAttempt(
     }
   }
 
-  const pool = await db.prepare(
-    "SELECT id, category, prompt, options_json FROM questions WHERE active = 1 ORDER BY random() LIMIT 10"
-  ).all<Omit<QuestionRow, "position">>();
-  if (pool.results.length < 10) throw new Error("The quiz question bank is not ready.");
+  let selectedQuestions: Array<Omit<QuestionRow, "position">>;
+  if (competitionId) {
+    let questionSet = await db.prepare(
+      "SELECT question_ids_json AS questionIdsJson FROM competition_question_sets WHERE competition_id = ?"
+    ).bind(competitionId).first<{ questionIdsJson: string }>();
+    if (!questionSet) {
+      const candidateSet = await db.prepare(
+        "SELECT id FROM questions WHERE active = 1 ORDER BY random() LIMIT 10"
+      ).all<{ id: string }>();
+      if (candidateSet.results.length < 10) throw new Error("The quiz question bank is not ready.");
+      await db.prepare(
+        "INSERT OR IGNORE INTO competition_question_sets (competition_id, question_ids_json) VALUES (?, ?)"
+      ).bind(competitionId, JSON.stringify(candidateSet.results.map((row) => row.id))).run();
+      questionSet = await db.prepare(
+        "SELECT question_ids_json AS questionIdsJson FROM competition_question_sets WHERE competition_id = ?"
+      ).bind(competitionId).first<{ questionIdsJson: string }>();
+    }
+    const ids = questionSet ? JSON.parse(questionSet.questionIdsJson) as string[] : [];
+    if (!Array.isArray(ids) || ids.length !== 10 || ids.some((id) => typeof id !== "string")) {
+      throw new Error("This competition's question set is unavailable.");
+    }
+    const placeholders = ids.map(() => "?").join(", ");
+    const rows = await db.prepare(
+      "SELECT id, category, prompt, options_json FROM questions WHERE active = 1 AND id IN (" + placeholders + ")"
+    ).bind(...ids).all<Omit<QuestionRow, "position">>();
+    const byId = new Map(rows.results.map((row) => [row.id, row]));
+    selectedQuestions = ids.map((id) => byId.get(id)).filter((row): row is Omit<QuestionRow, "position"> => Boolean(row));
+  } else {
+    const pool = await db.prepare(
+      "SELECT id, category, prompt, options_json FROM questions WHERE active = 1 ORDER BY random() LIMIT 10"
+    ).all<Omit<QuestionRow, "position">>();
+    selectedQuestions = pool.results;
+  }
+  if (selectedQuestions.length !== 10) throw new Error("The quiz question bank is not ready.");
   const attemptId = crypto.randomUUID();
   const expiry = Math.min(dbNow + 900, competition?.ends_at ?? dbNow + 900);
   const statements: FanZoneD1Statement[] = [
@@ -72,7 +102,7 @@ export async function startQuizAttempt(
       "INSERT INTO quiz_attempts (id, user_id, competition_id, mode, status, score, total_questions, started_at, expires_at) " +
       "VALUES (?, ?, ?, ?, 'active', 0, 10, ?, ?)"
     ).bind(attemptId, userId, competitionId ?? null, mode, dbNow, expiry),
-    ...pool.results.map((question, position) => db.prepare(
+    ...selectedQuestions.map((question, position) => db.prepare(
       "INSERT INTO attempt_questions (attempt_id, question_id, position) VALUES (?, ?, ?)"
     ).bind(attemptId, question.id, position))
   ];

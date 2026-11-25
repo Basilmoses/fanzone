@@ -27,6 +27,11 @@ CREATE INDEX IF NOT EXISTS competitions_created_by_idx ON competitions(created_b
 CREATE INDEX IF NOT EXISTS competitions_opponent_idx ON competitions(opponent_user_id, status);
 CREATE INDEX IF NOT EXISTS competitions_daily_idx ON competitions(type, daily_date, status);
 
+CREATE TABLE IF NOT EXISTS competition_question_sets (
+  competition_id TEXT PRIMARY KEY REFERENCES competitions(id) ON DELETE CASCADE,
+  question_ids_json TEXT NOT NULL
+);
+
 CREATE TABLE IF NOT EXISTS quiz_attempts (
   id TEXT PRIMARY KEY,
   user_id TEXT NOT NULL REFERENCES users(id) ON DELETE CASCADE,

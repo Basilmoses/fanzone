@@ -59,13 +59,7 @@
   }
 
   async function leaderboard() {
-    section = "leaderboard";
-    try {
-      const response = await fetch("/api/leaderboard?scope=all-time");
-      const data = await response.json();
-      if (response.ok) entries = data.entries ?? [];
-      else error = data.error ?? "Leaderboard is unavailable.";
-    } catch { error = "Leaderboard is unavailable."; }
+    await goto("/leaderboard");
   }
 
   async function history() {
@@ -101,7 +95,7 @@
     <main><div class="eyebrow">ALL-TIME STANDINGS</div><h1>Leaderboard</h1><div class="panel">{#each entries as row, i}<div class="rank"><b>#{i + 1}</b><span>{row.displayName}</span><strong>{row.score} pts</strong></div>{:else}<p class="muted">No saved scores yet.</p>{/each}</div></main>
   {:else if section === "profile"}
     <main><div class="eyebrow">PLAYER PROFILE</div><h1>{user ? "Welcome, " + user.displayName : "Your profile"}</h1>
-      {#if user}<div class="panel"><p>{user.email}</p><p class="muted">Your saved quiz history appears here.</p><button class="secondary" onclick={signOut}>Sign out</button></div><h2>Recent quizzes</h2><div class="panel">{#each entries as row}<div class="rank"><span>{row.displayName ?? "Quiz"}</span><strong>{row.score}/{row.totalQuestions}</strong></div>{:else}<p class="muted">Complete a quiz to start your history.</p>{/each}</div>
+      {#if user}<div class="panel"><p>{user.email}</p><p class="muted">Your saved quiz history appears here.</p><button class="secondary" onclick={() => goto("/players/" + encodeURIComponent(user.id))}>View player profile</button><button class="secondary" onclick={signOut}>Sign out</button></div><h2>Recent quizzes</h2><div class="panel">{#each entries as row}<div class="rank"><span>{row.displayName ?? "Quiz"}</span><strong>{row.score}/{row.totalQuestions}</strong></div>{:else}<p class="muted">Complete a quiz to start your history.</p>{/each}</div>
       {:else}<div class="panel"><p class="muted">Sign in to save your competition scores.</p><button class="primary" onclick={() => goto("/account")}>Create account or sign in</button></div>{/if}</main>
   {:else}
     <main class="hero"><div class="pill">⚽ FOOTBALL KNOWLEDGE. REAL COMPETITION.</div><h1>DON’T JUST WATCH FOOTBALL.<br/><em>PROVE YOU KNOW IT.</em></h1><p>Challenge your football knowledge, compete with fans and climb the leaderboard.</p><div class="actions"><button class="primary" onclick={start} disabled={busy}>Start a quick quiz <span>→</span></button><button class="secondary" onclick={leaderboard}>View leaderboard</button><button class="secondary" onclick={() => goto("/competitions")}>Competitions</button></div><div class="stats"><div><strong>10</strong><span>Questions per quiz</span></div><div><strong>15 min</strong><span>Quiz time limit</span></div><div><strong>1v1</strong><span>Head-to-head</span></div></div></main>

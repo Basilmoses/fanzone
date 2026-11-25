@@ -82,7 +82,7 @@
 <svelte:head><title>FanZone — Prove You Know Football</title><meta name="description" content="Compete in football knowledge quizzes, head-to-head challenges and tournaments." /></svelte:head>
 <div class="shell">
   <header><a class="brand" href="/">FAN<span>ZONE</span><small> FOOTBALL CHALLENGE</small></a>
-    <nav><button onclick={() => section = "home"}>Home</button><button onclick={start}>Play</button><button onclick={() => goto("/competitions")}>Competitions</button><button onclick={leaderboard}>Leaderboard</button><button onclick={history}>Profile</button></nav>
+    <nav><button onclick={() => section = "home"}>Home</button><button onclick={start}>Play</button><button onclick={() => goto("/competitions")}>Competitions</button><button onclick={() => goto("/wallet")}>Wallet · Coming soon</button><button onclick={leaderboard}>Leaderboard</button><button onclick={history}>Profile</button></nav>
     {#if user}<button class="account" onclick={history}>{user.displayName.slice(0,1).toUpperCase()}</button>{:else}<button class="account" onclick={() => goto("/account")}>Sign in</button>{/if}
   </header>
   {#if section === "play" && !finished && current}
@@ -102,7 +102,7 @@
     <section class="features"><article><div>⚡</div><h3>Quick Quiz</h3><p>Test your knowledge in a fast-paced round.</p><button class="secondary" onclick={start}>Play now</button></article><article><div>🤝</div><h3>Head-to-Head</h3><p>Challenge another fan and settle the score.</p><button class="secondary" onclick={() => goto("/competitions")}>Create challenge</button></article><article><div>🏆</div><h3>Daily Tournament</h3><p>Compete daily and rise through the ranks.</p><button class="secondary" onclick={() => goto("/competitions")}>View tournament</button></article></section>
   {/if}
   {#if error && section !== "play"}<p class="error page-error" role="alert">{error}</p>{/if}
-  <footer>FANZONE <span>·</span> Built for fans who know the game. <small>Competition demo — no betting or real-money transactions are enabled.</small></footer>
+  <footer>FANZONE <span>·</span> Built for fans who know the game. <small>Wallet · Coming soon — FanZone does not accept deposits or make payouts yet.</small></footer>
 </div>
 <style>
   .account{background:#c8f169;color:#10160e;border:0;border-radius:7px;padding:10px 13px;font-weight:700}
